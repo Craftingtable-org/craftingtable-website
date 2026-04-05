@@ -85,7 +85,12 @@ export function ThreadPage() {
             className="flex items-center gap-2 sm:gap-3"
             aria-label="Landing navigation"
           >
-            <Button variant="ghost" size="sm" className="text-muted-foreground" asChild>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="text-muted-foreground"
+              asChild
+            >
               <Link to="/">All tools</Link>
             </Button>
             <Button size="sm" className="rounded-lg shadow-sm" asChild>
@@ -120,12 +125,17 @@ export function ThreadPage() {
               </span>
             </h1>
             <p className="mx-auto mt-6 max-w-2xl text-pretty text-lg leading-relaxed text-muted-foreground sm:text-xl">
-              Compare thumbnails like a real marketplace grid, lay out server GUIs with
-              drag-and-drop, write resource READMEs with placeholders and exports —
-              all in one place, tuned for how UGC creators actually work.
+              Compare thumbnails like a real marketplace grid, lay out server
+              GUIs with drag-and-drop, write resource READMEs with placeholders
+              and exports — all in one place, tuned for how UGC creators
+              actually work.
             </p>
             <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
-              <Button size="lg" className="h-12 min-w-[11rem] rounded-xl px-8 text-base shadow-lg" asChild>
+              <Button
+                size="lg"
+                className="h-12 min-w-[11rem] rounded-xl px-8 text-base shadow-lg"
+                asChild
+              >
                 <Link to="/" className="gap-2">
                   Explore the tool hub
                   <ArrowRight className="h-4 w-4" aria-hidden />
@@ -180,26 +190,35 @@ export function ThreadPage() {
                 Why we exist
               </p>
               <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-                Creators lose time context-switching between editors, listing UIs, and
-                server configs.
+                Creators lose time context-switching between editors, listing
+                UIs, and server configs.
               </h2>
               <p className="text-lg leading-relaxed text-muted-foreground">
-                You shouldn’t need five tabs and a spreadsheet to pick a thumbnail, draft
-                a README, and align a menu YAML with what players actually see. We build
-                small, sharp tools that match real workflows — not generic “AI writer”
-                boxes.
+                You shouldn’t need five tabs and a spreadsheet to pick a
+                thumbnail, draft a README, and align a menu YAML with what
+                players actually see. We build small, sharp tools that match
+                real workflows — not generic “AI writer” boxes.
               </p>
             </div>
             <div className="rounded-3xl border border-border/60 bg-card p-8 shadow-sm ring-1 ring-border/40">
-              <h3 className="text-lg font-semibold">What Craftingtable does instead</h3>
+              <h3 className="text-lg font-semibold">
+                What Craftingtable does instead
+              </h3>
               <ul className="mt-6 space-y-4">
                 {[
+                  "Live text formatting with legacy codes, MiniMessage tags, small caps, and emoji.",
                   "Previews that look like real resource grids, not toy layouts.",
                   "Exports you can paste into CommandPanels, DeluxeMenus, or your host.",
                   "README flows with BBCode/Markdown, placeholders, and one-click downloads.",
                 ].map((line) => (
-                  <li key={line} className="flex gap-3 text-sm leading-relaxed text-muted-foreground">
-                    <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-primary" aria-hidden />
+                  <li
+                    key={line}
+                    className="flex gap-3 text-sm leading-relaxed text-muted-foreground"
+                  >
+                    <CheckCircle2
+                      className="mt-0.5 h-5 w-5 shrink-0 text-primary"
+                      aria-hidden
+                    />
                     {line}
                   </li>
                 ))}
@@ -245,7 +264,8 @@ export function ThreadPage() {
               How we fit into your day
             </h2>
             <p className="mt-4 text-lg text-muted-foreground">
-              Three steps — pick a tool, iterate in the preview, export or save for later.
+              Three steps — pick a tool, iterate in the preview, export or save
+              for later.
             </p>
           </div>
           <ol className="mt-14 grid gap-8 md:grid-cols-3">
@@ -339,7 +359,8 @@ export function ThreadPage() {
                       <div
                         className={cn(
                           "flex flex-col gap-6 p-6 sm:p-8",
-                          featured && "sm:flex-row sm:items-stretch sm:justify-between sm:gap-10",
+                          featured &&
+                            "sm:flex-row sm:items-stretch sm:justify-between sm:gap-10",
                         )}
                       >
                         <div className="min-w-0 flex-1 space-y-4">
@@ -360,7 +381,12 @@ export function ThreadPage() {
                             </p>
                           </div>
                         </div>
-                        <div className={cn("flex shrink-0 items-end", featured && "sm:items-center")}>
+                        <div
+                          className={cn(
+                            "flex shrink-0 items-end",
+                            featured && "sm:items-center",
+                          )}
+                        >
                           <Button
                             className="w-full rounded-xl sm:w-auto"
                             variant={featured ? "default" : "outline"}
@@ -388,7 +414,8 @@ export function ThreadPage() {
               Principles behind every screen
             </h2>
             <p className="mt-4 text-lg text-muted-foreground">
-              Small surface area, high signal — so you spend less time fighting the UI.
+              Small surface area, high signal — so you spend less time fighting
+              the UI.
             </p>
           </div>
           <ul className="mt-14 grid gap-6 sm:grid-cols-3">
@@ -435,7 +462,11 @@ export function ThreadPage() {
             </p>
             <Accordion type="single" collapsible className="mt-10 w-full">
               {FAQ_ITEMS.map((item, idx) => (
-                <AccordionItem key={item.q} value={`item-${idx}`} className="border-border/60">
+                <AccordionItem
+                  key={item.q}
+                  value={`item-${idx}`}
+                  className="border-border/60"
+                >
                   <AccordionTrigger className="text-left text-base hover:no-underline">
                     {item.q}
                   </AccordionTrigger>
@@ -460,8 +491,8 @@ export function ThreadPage() {
                 Ready to speed up your workflow?
               </h2>
               <p className="mx-auto mt-4 max-w-xl text-primary-foreground/90">
-                Jump into the hub and pick the tool that matches what you’re shipping
-                this week.
+                Jump into the hub and pick the tool that matches what you’re
+                shipping this week.
               </p>
               <Button
                 size="lg"
