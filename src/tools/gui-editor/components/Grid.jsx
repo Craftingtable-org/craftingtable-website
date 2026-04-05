@@ -1,29 +1,19 @@
 import React, { memo, useMemo } from "react";
-import { useDroppable } from "@dnd-kit/core";
+import { useDraggable, useDroppable } from "@dnd-kit/core";
 import { MinecraftItemTooltip } from "./MinecraftItemTooltip.jsx";
-import {
-  SortableContext,
-  useSortable,
-  rectSortingStrategy,
-} from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
 
 const Slot = memo(function Slot({ id, item, isSelected, onClick }) {
   const {
     attributes,
     listeners,
-    setNodeRef,
-    transform,
-    transition,
+    setNodeRef: setDraggableRef,
     isDragging,
-  } = useSortable({
+  } = useDraggable({
     id,
     data: { isSlot: true, slotIndex: id },
   });
 
   const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
     zIndex: isDragging ? 1 : 0,
     opacity: isDragging ? 0.5 : 1,
   };
@@ -40,7 +30,7 @@ const Slot = memo(function Slot({ id, item, isSelected, onClick }) {
   return (
     <div
       ref={(node) => {
-        setNodeRef(node);
+        setDraggableRef(node);
         setDroppableRef(node);
       }}
       style={style}
@@ -98,25 +88,23 @@ export function Grid({ size, slots, selectedSlot, onSelectSlot }) {
   return (
     <div className="flex-1 flex items-center justify-center bg-slate-50 dark:bg-slate-900 p-8 overflow-auto">
       <div className="bg-[#C6C6C6] p-4 rounded-lg shadow-xl border-4 border-[#555555] inline-block">
-        <SortableContext items={slotIds} strategy={rectSortingStrategy}>
-          <div
-            className="grid gap-1"
-            style={{
-              gridTemplateColumns: "repeat(9, minmax(0, 1fr))",
-              gridTemplateRows: `repeat(${numRows}, minmax(0, 1fr))`,
-            }}
-          >
-            {slotIds.map((id) => (
-              <Slot
-                key={id}
-                id={id}
-                item={slots[id]}
-                isSelected={selectedSlot === id}
-                onClick={onSelectSlot}
-              />
-            ))}
-          </div>
-        </SortableContext>
+        <div
+          className="grid gap-1"
+          style={{
+            gridTemplateColumns: "repeat(9, minmax(0, 1fr))",
+            gridTemplateRows: `repeat(${numRows}, minmax(0, 1fr))`,
+          }}
+        >
+          {slotIds.map((id) => (
+            <Slot
+              key={id}
+              id={id}
+              item={slots[id]}
+              isSelected={selectedSlot === id}
+              onClick={onSelectSlot}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );

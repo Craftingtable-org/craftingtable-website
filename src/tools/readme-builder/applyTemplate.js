@@ -9,7 +9,7 @@ import {
  * @param {Record<string, string>} values Keys match \`BUILTIN_PLACEHOLDER_DEFS\` (\`resource_title\`, etc.)
  * @param {{ key: string, value: string }[]} customPairs
  * @param {Record<string, boolean>} pluginEnabled
- * @param {{ pluginFormat?: "bbcode" | "markdown" }} [opts]
+ * @param {{ pluginFormat?: "bbcode" | "markdown"; pluginGuideOverrides?: Record<string, { markdown?: string; bbcode?: string }> }} [opts]
  */
 export function applyReadmeTemplate(
   body,
@@ -19,10 +19,11 @@ export function applyReadmeTemplate(
   opts = {},
 ) {
   const fmt = opts.pluginFormat ?? "bbcode";
+  const og = opts.pluginGuideOverrides || {};
   const pluginBlock =
     fmt === "markdown"
-      ? buildPluginGuidesMarkdown(pluginEnabled || {})
-      : buildPluginGuidesBBCode(pluginEnabled || {});
+      ? buildPluginGuidesMarkdown(pluginEnabled || {}, og)
+      : buildPluginGuidesBBCode(pluginEnabled || {}, og);
   let s = body.replace(
     /\{\{PLUGIN_GUIDES\}\}/g,
     pluginBlock.trim() ? `\n${pluginBlock}\n` : "\n",

@@ -1,5 +1,6 @@
 import {
   Bookmark,
+  ChevronDown,
   CircleHelp,
   Download,
   FileText,
@@ -35,6 +36,8 @@ import { BUILTIN_PLACEHOLDER_DEFS, placeholderHelpLines } from "@/tools/readme-b
 import {
   PLUGIN_SNIPPET_IDS,
   PLUGIN_SNIPPET_LABELS,
+  PLUGIN_SNIPPETS,
+  PLUGIN_SNIPPETS_BB,
 } from "@/tools/readme-builder/pluginSnippets";
 import { useReadmeBuilder } from "@/tools/readme-builder/useReadmeBuilder";
 
@@ -453,6 +456,73 @@ export function ReadmeBuilderPage() {
                   </span>
                 </label>
               ))}
+              <details
+                className={cn(
+                  "group mt-2 rounded-xl border border-border/50 bg-muted/20 p-0 shadow-sm open:bg-muted/30 dark:bg-zinc-900/30",
+                )}
+              >
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-2 rounded-xl px-3 py-2.5 text-xs font-semibold text-foreground marker:content-none [&::-webkit-details-marker]:hidden">
+                  <span>Advanced options</span>
+                  <ChevronDown
+                    className="h-4 w-4 shrink-0 text-muted-foreground transition-transform group-open:rotate-180"
+                    aria-hidden
+                  />
+                </summary>
+                <div className="space-y-3 border-t border-border/40 px-3 pb-3 pt-2">
+                  <p className="text-[11px] leading-relaxed text-muted-foreground">
+                    Override the text appended for each checked plugin. Leave a
+                    field empty to use the built-in guide. Matches your template
+                    format ({r.editorMode === "markdown" ? "Markdown" : "BBCode"}
+                    ).
+                  </p>
+                  {PLUGIN_SNIPPET_IDS.map((id) => {
+                    const fmtKey =
+                      r.editorMode === "markdown" ? "markdown" : "bbcode";
+                    const builtIn =
+                      r.editorMode === "markdown"
+                        ? PLUGIN_SNIPPETS[id]
+                        : PLUGIN_SNIPPETS_BB[id];
+                    const val =
+                      r.pluginGuideOverrides[id]?.[fmtKey] ?? "";
+                    return (
+                      <div
+                        key={id}
+                        className="space-y-1.5 rounded-lg border border-border/40 bg-card/60 p-2.5 dark:bg-zinc-900/40"
+                      >
+                        <div className="flex flex-wrap items-center justify-between gap-2">
+                          <span className="text-xs font-medium text-foreground">
+                            {PLUGIN_SNIPPET_LABELS[id] || id}
+                          </span>
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            className="h-7 px-2 text-[11px] text-muted-foreground hover:text-foreground"
+                            onClick={() => r.clearPluginGuideOverride(id)}
+                          >
+                            Reset
+                          </Button>
+                        </div>
+                        <Textarea
+                          value={val}
+                          onChange={(e) =>
+                            r.updatePluginGuideOverride(
+                              id,
+                              fmtKey,
+                              e.target.value,
+                            )
+                          }
+                          placeholder={builtIn}
+                          title={builtIn}
+                          className="min-h-[6.5rem] resize-y rounded-lg font-mono text-[11px] leading-relaxed"
+                          spellCheck={true}
+                          aria-label={`Custom ${PLUGIN_SNIPPET_LABELS[id] || id} guide (${fmtKey})`}
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
+              </details>
             </CardContent>
           </Card>
 

@@ -6,9 +6,17 @@ import {
   closestCenter,
   MouseSensor,
   TouchSensor,
+  pointerWithin,
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
+
+/** Prefer the cell under the cursor; closest-center mis-picks neighboring slots on small grids. */
+function gridPointerCollision(args) {
+  const within = pointerWithin(args);
+  if (within.length > 0) return within;
+  return closestCenter(args);
+}
 import { ToolPageHeader } from "@/layout/PageHeader";
 import { PageTemplate } from "@/layout/PageTemplate";
 import { Button } from "@/components/ui/button";
@@ -206,7 +214,7 @@ export function GuiEditorPage() {
         {/* Main Editor Area */}
         <DndContext
           sensors={sensors}
-          collisionDetection={closestCenter}
+          collisionDetection={gridPointerCollision}
           onDragStart={handleDragStart}
           onDragEnd={handleDragEnd}
         >

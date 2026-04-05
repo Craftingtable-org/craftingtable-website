@@ -27,6 +27,12 @@ const ReadmeBuilderPage = lazy(() =>
   })),
 );
 
+const ThreadPage = lazy(() =>
+  import("@/tools/thread/ThreadPage").then((m) => ({
+    default: m.ThreadPage,
+  })),
+);
+
 function RouteFallback() {
   return (
     <div className="flex min-h-[40vh] items-center justify-center text-sm text-muted-foreground">
@@ -36,12 +42,20 @@ function RouteFallback() {
 }
 
 /**
- * App routes. Each tool lives under `src/tools/<tool-id>/` and is imported here.
- * Heavy tools are lazy-loaded so the home bundle stays smaller.
+ * App routes. `/thread` is outside `AppLayout` (no sidebar). Other tools live under
+ * `src/tools/<tool-id>/` and are lazy-loaded where heavy.
  */
 export function AppRoutes() {
   return (
     <Routes>
+      <Route
+        path="/thread"
+        element={
+          <Suspense fallback={<RouteFallback />}>
+            <ThreadPage />
+          </Suspense>
+        }
+      />
       <Route element={<AppLayout />}>
         <Route path="/" element={<HomePage />} />
         <Route

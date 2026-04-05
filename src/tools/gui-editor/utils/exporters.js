@@ -1,74 +1,112 @@
 import yaml from "js-yaml";
 
-export function exportToCommandPanels(state) {
-  const panel = {
-    panels: {
-      [state.title.replace(/[^a-zA-Z0-9]/g, "_") || "custom_panel"]: {
-        title: state.title || "Custom GUI",
-        rows: state.size / 9,
-        item: {},
-      },
-    },
+/**
+ * CommandPanels inventory panel format (per-panel YAML): `title`, `type`,
+ * `rows`, `command`, `aliases`, `layout` (slot string → list of item ids),
+ * `items` (id → material, stack, lore, conditions, actions, left-click, …).
+ * @see https://docs.commandpanels.net/paneltypes/inventorypanels/configuration/
+ */
+function commandPanelSlug(title) {
+  const slug = String(title || "panel")
+    .replace(/[^a-zA-Z0-9]+/g, "_")
+    .replace(/^_|_$/g, "")
+    .toLowerCase();
+  return slug || "panel";
+}
+
+function buildCommandPanelsItemDef(item) {
+  const def = {
+    material: item.material || "STONE",
+    stack: Math.max(1, item.amount || 1),
   };
 
-  const itemSection = panel.panels[Object.keys(panel.panels)[0]].item;
+  if (item.name) def.name = item.name;
+  if (item.lore?.trim()) def.lore = item.lore.split("\n");
 
-  Object.entries(state.slots).forEach(([slotIndex, item]) => {
-    if (!item) return;
-    const key = `item_${slotIndex}`;
-    const panelItem = {
-      material: item.material || "STONE",
-      slot: parseInt(slotIndex, 10),
+  if (item.glow) def.glow = true;
+  if (item.custom_model_data != null && item.custom_model_data !== "") {
+    def.custom_model_data = item.custom_model_data;
+  }
+  if (item.damage != null && item.damage !== "") def.damage = item.damage;
+  if (item.rgb) def.color = item.rgb;
+
+  if (item.viewRequirements?.length) {
+    def.conditions =
+      item.viewRequirements.length === 1
+        ? item.viewRequirements[0]
+        : item.viewRequirements.join(" $AND ");
+  }
+
+  if (item.actions?.length) {
+    def.actions = { commands: item.actions };
+  }
+
+  if (item.leftClickActions?.length || item.leftClickRequirements?.length) {
+    def["left-click"] = {};
+    if (item.leftClickRequirements?.length) {
+      def["left-click"].requirements = item.leftClickRequirements;
+    }
+    if (item.leftClickActions?.length) {
+      def["left-click"].commands = item.leftClickActions;
+    }
+  }
+
+  if (item.rightClickActions?.length || item.rightClickRequirements?.length) {
+    def["right-click"] = {};
+    if (item.rightClickRequirements?.length) {
+      def["right-click"].requirements = item.rightClickRequirements;
+    }
+    if (item.rightClickActions?.length) {
+      def["right-click"].commands = item.rightClickActions;
+    }
+  }
+
+  if (item.shiftLeftClickActions?.length) {
+    def["shift-left-click"] = {
+      commands: item.shiftLeftClickActions,
     };
+  }
 
-    if (item.name) panelItem.name = item.name;
-    if (item.lore) panelItem.lore = item.lore.split("\n");
-    if (item.amount && item.amount > 1) panelItem.amount = item.amount;
-    if (item.glow) panelItem.glow = true;
-    if (item.custom_model_data)
-      panelItem.custom_model_data = item.custom_model_data;
-    if (item.damage) panelItem.damage = item.damage;
-    if (item.rgb) panelItem.color = item.rgb;
+  if (item.shiftRightClickActions?.length) {
+    def["shift-right-click"] = {
+      commands: item.shiftRightClickActions,
+    };
+  }
 
-    const commands = [];
-    if (item.actions?.length) commands.push(...item.actions);
-    if (item.leftClickActions?.length)
-      commands.push(...item.leftClickActions.map((c) => `left=${c}`));
-    if (item.rightClickActions?.length)
-      commands.push(...item.rightClickActions.map((c) => `right=${c}`));
-    if (item.shiftLeftClickActions?.length)
-      commands.push(
-        ...item.shiftLeftClickActions.map((c) => `shift_left=${c}`),
-      );
-    if (item.shiftRightClickActions?.length)
-      commands.push(
-        ...item.shiftRightClickActions.map((c) => `shift_right=${c}`),
-      );
+  return def;
+}
 
-    if (commands.length > 0) panelItem.commands = commands;
+export function exportToCommandPanels(state) {
+  const rows = state.size / 9;
+  const command = commandPanelSlug(state.title);
 
-    // View Requirements for CP
-    if (item.viewRequirements?.length) {
-      panelItem.view_requirement = item.viewRequirements;
-    }
+  /** @type {Record<string, string[]>} */
+  const layout = {};
+  /** @type {Record<string, object>} */
+  const items = {};
 
-    // CommandPanels doesn't natively segregate click requirements by type as deeply as DM without using commands or conditionals
-    // but we can map the left/right click reqs if the user provided them.
-    // CP relies heavily on placeholders in commands, but we'll export them as standard array if they try.
-    if (
-      item.leftClickRequirements?.length ||
-      item.rightClickRequirements?.length
-    ) {
-      panelItem.click_requirement = [
-        ...(item.leftClickRequirements || []),
-        ...(item.rightClickRequirements || []),
-      ];
-    }
+  const slotIndices = Object.keys(state.slots)
+    .filter((k) => state.slots[k])
+    .sort((a, b) => parseInt(a, 10) - parseInt(b, 10));
 
-    itemSection[key] = panelItem;
-  });
+  for (const slotIndex of slotIndices) {
+    const slotItem = state.slots[slotIndex];
+    const itemId = `item_${slotIndex}`;
+    layout[String(slotIndex)] = [itemId];
+    items[itemId] = buildCommandPanelsItemDef(slotItem);
+  }
 
-  return yaml.dump(panel);
+  const panel = {
+    title: state.title || "Custom GUI",
+    type: "inventory",
+    rows,
+    command,
+    aliases: [],
+    layout,
+    items,
+  };
+
+  return yaml.dump(panel, { lineWidth: -1, noRefs: true });
 }
 
 export function exportToDeluxeMenus(state) {

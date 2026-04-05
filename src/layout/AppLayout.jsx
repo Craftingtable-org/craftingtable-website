@@ -14,8 +14,8 @@ const ROUTE_DOCUMENT_TITLES = {
 };
 
 /**
- * Root layout for the entire app. Every route renders inside this shell so the
- * navigation sidebar (and footer) are identical on all pages—present and future.
+ * Root layout for most routes: sidebar + main + footer. The `/thread` overview
+ * route is declared separately in `routes.jsx` (full-width, no sidebar).
  *
  * Do not duplicate this structure on individual pages; use `<Outlet />` via nested routes only.
  */

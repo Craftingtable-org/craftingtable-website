@@ -15,7 +15,10 @@ import {
   looksLikeMarkdownTemplate,
   README_BASE_TEMPLATES,
 } from "@/tools/readme-builder/defaultTemplate";
-import { BUILTIN_PLACEHOLDER_DEFS } from "@/tools/readme-builder/placeholders";
+import {
+  BUILTIN_PLACEHOLDER_DEFS,
+  mergeCustomPlaceholderRowsFromBody,
+} from "@/tools/readme-builder/placeholders";
 import { PLUGIN_SNIPPET_IDS } from "@/tools/readme-builder/pluginSnippets";
 
 const STORAGE_V2 = "readme_builder_state_v2";
@@ -83,6 +86,9 @@ export function useReadmeBuilder() {
     ...defaultPluginState(),
     ...(initial?.pluginEnabled || {}),
   }));
+  const [pluginGuideOverrides, setPluginGuideOverrides] = useState(
+    () => initial?.pluginGuideOverrides ?? {},
+  );
   const [savedTemplates, setSavedTemplates] = useState(
     initial?.savedTemplates ?? [],
   );
@@ -97,6 +103,7 @@ export function useReadmeBuilder() {
           values,
           customPlaceholders,
           pluginEnabled,
+          pluginGuideOverrides,
           savedTemplates,
         }),
       );
@@ -109,6 +116,7 @@ export function useReadmeBuilder() {
     values,
     customPlaceholders,
     pluginEnabled,
+    pluginGuideOverrides,
     savedTemplates,
   ]);
 
@@ -118,8 +126,9 @@ export function useReadmeBuilder() {
     () =>
       applyReadmeTemplate(body, values, customPlaceholders, pluginEnabled, {
         pluginFormat,
+        pluginGuideOverrides,
       }),
-    [body, values, customPlaceholders, pluginEnabled, pluginFormat],
+    [body, values, customPlaceholders, pluginEnabled, pluginGuideOverrides, pluginFormat],
   );
 
   const previewHtml = useMemo(() => {
@@ -136,18 +145,31 @@ export function useReadmeBuilder() {
   const saveCurrentTemplate = useCallback(
     (name) => {
       const trimmed = (name || "").trim() || "Untitled template";
+      const mergedCustom = mergeCustomPlaceholderRowsFromBody(
+        body,
+        customPlaceholders,
+      );
+      setCustomPlaceholders(mergedCustom);
       const entry = {
         id: uid(),
         name: trimmed,
         editorMode,
         body,
         values: { ...values },
-        customPlaceholders: [...customPlaceholders],
+        customPlaceholders: mergedCustom,
         pluginEnabled: { ...pluginEnabled },
+        pluginGuideOverrides: { ...pluginGuideOverrides },
       };
       setSavedTemplates((prev) => [...prev, entry]);
     },
-    [editorMode, body, values, customPlaceholders, pluginEnabled],
+    [
+      editorMode,
+      body,
+      values,
+      customPlaceholders,
+      pluginEnabled,
+      pluginGuideOverrides,
+    ],
   );
 
   const loadTemplate = useCallback(
@@ -159,6 +181,7 @@ export function useReadmeBuilder() {
       setValues({ ...defaultValues(), ...t.values });
       setCustomPlaceholders(t.customPlaceholders || []);
       setPluginEnabled({ ...defaultPluginState(), ...t.pluginEnabled });
+      setPluginGuideOverrides(t.pluginGuideOverrides ?? {});
     },
     [savedTemplates],
   );
@@ -167,41 +190,74 @@ export function useReadmeBuilder() {
     setSavedTemplates((prev) => prev.filter((x) => x.id !== id));
   }, []);
 
-  const exportTemplateJson = useCallback(() => {
-    return JSON.stringify(
-      {
-        version: 2,
-        editorMode,
-        body,
-        values,
-        customPlaceholders,
-        pluginEnabled,
-      },
-      null,
-      2,
+  const getTemplateExportPayload = useCallback(() => {
+    const mergedCustom = mergeCustomPlaceholderRowsFromBody(
+      body,
+      customPlaceholders,
     );
-  }, [editorMode, body, values, customPlaceholders, pluginEnabled]);
+    return {
+      mergedCustom,
+      json: JSON.stringify(
+        {
+          version: 2,
+          editorMode,
+          body,
+          values,
+          customPlaceholders: mergedCustom,
+          pluginEnabled,
+          pluginGuideOverrides,
+        },
+        null,
+        2,
+      ),
+    };
+  }, [
+    editorMode,
+    body,
+    values,
+    customPlaceholders,
+    pluginEnabled,
+    pluginGuideOverrides,
+  ]);
+
+  const exportTemplateJson = useCallback(
+    () => getTemplateExportPayload().json,
+    [getTemplateExportPayload],
+  );
 
   const importTemplateJson = useCallback((jsonText) => {
     const data = JSON.parse(jsonText);
     if (data.editorMode === "markdown" || data.editorMode === "bbcode") {
       setEditorMode(data.editorMode);
     }
-    if (data.body != null) setBody(String(data.body));
+    const bodyStr = data.body != null ? String(data.body) : null;
+    if (bodyStr != null) setBody(bodyStr);
     if (data.values && typeof data.values === "object") {
       setValues({ ...defaultValues(), ...data.values });
     }
-    if (Array.isArray(data.customPlaceholders)) {
-      setCustomPlaceholders(data.customPlaceholders);
+    let nextCustom = Array.isArray(data.customPlaceholders)
+      ? [...data.customPlaceholders]
+      : [];
+    if (bodyStr != null) {
+      nextCustom = mergeCustomPlaceholderRowsFromBody(bodyStr, nextCustom);
     }
+    setCustomPlaceholders(nextCustom);
     if (data.pluginEnabled && typeof data.pluginEnabled === "object") {
       setPluginEnabled({ ...defaultPluginState(), ...data.pluginEnabled });
+    }
+    if (data.pluginGuideOverrides && typeof data.pluginGuideOverrides === "object") {
+      setPluginGuideOverrides(data.pluginGuideOverrides);
+    } else {
+      setPluginGuideOverrides({});
     }
   }, []);
 
   const importRawBody = useCallback((text) => {
     setBody(text);
     setEditorMode(looksLikeMarkdownTemplate(text) ? "markdown" : "bbcode");
+    setCustomPlaceholders((prev) =>
+      mergeCustomPlaceholderRowsFromBody(text, prev),
+    );
   }, []);
 
   const downloadFile = useCallback((filename, content, mime) => {
@@ -305,6 +361,21 @@ ${inner}
     setPluginEnabled((prev) => ({ ...prev, [id]: !prev[id] }));
   }, []);
 
+  const updatePluginGuideOverride = useCallback((id, field, val) => {
+    setPluginGuideOverrides((prev) => ({
+      ...prev,
+      [id]: { ...prev[id], [field]: val },
+    }));
+  }, []);
+
+  const clearPluginGuideOverride = useCallback((id) => {
+    setPluginGuideOverrides((prev) => {
+      const next = { ...prev };
+      delete next[id];
+      return next;
+    });
+  }, []);
+
   const applyBaseTemplate = useCallback((templateId) => {
     const meta = README_BASE_TEMPLATES.find((t) => t.id === templateId);
     const label = meta?.label ?? "base template";
@@ -315,17 +386,23 @@ ${inner}
     ) {
       return;
     }
-    setBody(getReadmeBaseTemplateBody(templateId));
+    const nextBody = getReadmeBaseTemplateBody(templateId);
+    setBody(nextBody);
     setEditorMode("bbcode");
+    setCustomPlaceholders((prev) =>
+      mergeCustomPlaceholderRowsFromBody(nextBody, prev),
+    );
   }, []);
 
   const downloadTemplateJson = useCallback(() => {
+    const { mergedCustom, json } = getTemplateExportPayload();
+    setCustomPlaceholders(mergedCustom);
     downloadFile(
       "readme-template.json",
-      exportTemplateJson(),
+      json,
       "application/json;charset=utf-8",
     );
-  }, [downloadFile, exportTemplateJson]);
+  }, [downloadFile, getTemplateExportPayload]);
 
   return {
     editorMode,
@@ -340,6 +417,9 @@ ${inner}
     removeCustomPlaceholder,
     pluginEnabled,
     togglePlugin,
+    pluginGuideOverrides,
+    updatePluginGuideOverride,
+    clearPluginGuideOverride,
     resolvedOutput,
     previewHtml,
     savedTemplates,

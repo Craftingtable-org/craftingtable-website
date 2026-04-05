@@ -69,10 +69,20 @@ export const PLUGIN_SNIPPETS = {
 - **Tip:** Use \`/rg info\` while standing in a region to inspect flags.`,
 };
 
-export function buildPluginGuidesMarkdown(enabledIds) {
+/**
+ * @param {Record<string, boolean>} enabledIds
+ * @param {Record<string, { markdown?: string; bbcode?: string }>} [overrides]
+ */
+export function buildPluginGuidesMarkdown(enabledIds, overrides) {
   const ids = PLUGIN_SNIPPET_IDS.filter((id) => enabledIds[id]);
   if (ids.length === 0) return "";
-  const parts = ids.map((id) => PLUGIN_SNIPPETS[id]).filter(Boolean);
+  const parts = ids
+    .map((id) => {
+      const custom = overrides?.[id]?.markdown;
+      if (custom != null && String(custom).trim() !== "") return String(custom).trim();
+      return PLUGIN_SNIPPETS[id];
+    })
+    .filter(Boolean);
   return ["---", "## Common plugin edits", "", ...parts].join("\n");
 }
 
@@ -136,9 +146,19 @@ export const PLUGIN_SNIPPETS_BB = {
 [/list]`,
 };
 
-export function buildPluginGuidesBBCode(enabledIds) {
+/**
+ * @param {Record<string, boolean>} enabledIds
+ * @param {Record<string, { markdown?: string; bbcode?: string }>} [overrides]
+ */
+export function buildPluginGuidesBBCode(enabledIds, overrides) {
   const ids = PLUGIN_SNIPPET_IDS.filter((id) => enabledIds[id]);
   if (ids.length === 0) return "";
-  const parts = ids.map((id) => PLUGIN_SNIPPETS_BB[id]).filter(Boolean);
+  const parts = ids
+    .map((id) => {
+      const custom = overrides?.[id]?.bbcode;
+      if (custom != null && String(custom).trim() !== "") return String(custom).trim();
+      return PLUGIN_SNIPPETS_BB[id];
+    })
+    .filter(Boolean);
   return ["[hr]", "[h2]Common plugin edits[/h2]", "", ...parts].join("\n\n");
 }
