@@ -1,0 +1,18 @@
+services:
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+  api:
+    build: ./server
+    depends_on:
+      - redis
+    ports:
+      - "3001:3001"
+    environment:
+      PORT: "3001"
+      REDIS_URL: redis://redis:6379
+      VOID_WORLD_PATH: /app/assets/void-world-bedrock.mcworld
+    volumes:
+      - ./server/assets:/app/assets:ro

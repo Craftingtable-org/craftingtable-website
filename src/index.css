@@ -1,0 +1,318 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+        /* Brand #0767f1 → hsl(215, 94%, 49%) + derived shades */
+        --background: 215 35% 98%;
+        --foreground: 222 47% 11%;
+        --card: 0 0% 100%;
+        --card-foreground: 222 47% 11%;
+        --popover: 0 0% 100%;
+        --popover-foreground: 222 47% 11%;
+        --primary: 215 94% 49%;
+        --primary-hover: 215 94% 41%;
+        --primary-strong: 215 85% 38%;
+        --primary-subtle: 215 70% 96%;
+        --primary-faint: 215 55% 94%;
+        --primary-foreground: 0 0% 100%;
+        --muted: 215 28% 96%;
+        --muted-foreground: 220 9% 46%;
+        --border: 215 18% 90%;
+        --input: 215 18% 90%;
+        --ring: 215 94% 49%;
+        --radius: 0.875rem;
+    }
+
+    .dark {
+        --background: 222 28% 12%;
+        --foreground: 220 15% 92%;
+        --card: 224 20% 16%;
+        --card-foreground: 220 15% 92%;
+        --popover: 224 20% 16%;
+        --popover-foreground: 220 15% 92%;
+        --primary: 215 90% 58%;
+        --primary-hover: 215 88% 50%;
+        --primary-strong: 215 85% 72%;
+        --primary-subtle: 215 45% 20%;
+        --primary-faint: 215 40% 16%;
+        --primary-foreground: 0 0% 100%;
+        --muted: 223 18% 20%;
+        --muted-foreground: 220 12% 74%;
+        --border: 223 16% 25%;
+        --input: 223 16% 25%;
+        --ring: 215 90% 58%;
+    }
+
+    * {
+        @apply border-border;
+    }
+
+    body {
+        @apply antialiased;
+        background: hsl(var(--background));
+        color: hsl(var(--foreground));
+        font-family:
+            "Inter",
+            ui-sans-serif,
+            system-ui,
+            -apple-system,
+            "Segoe UI",
+            sans-serif;
+    }
+
+    .dark body {
+        color: hsl(var(--foreground));
+    }
+}
+
+@layer components {
+    .dark .ct-sidebar {
+        background: hsl(var(--card));
+        border-color: hsl(var(--border) / 0.6);
+    }
+
+    .market-content {
+        @apply flex w-full max-w-[1480px] flex-1 min-h-0 gap-3 px-0 py-6 sm:py-8 lg:py-10;
+    }
+
+    /** Desktop: constrain row height so the resource grid scrolls inside its column */
+    @media (min-width: 901px) {
+        .market-content {
+            overflow: hidden;
+            align-items: stretch;
+        }
+    }
+
+    .market-left {
+        @apply flex min-h-0 min-w-0 flex-1 flex-col overflow-y-auto;
+        transition: filter 180ms ease;
+    }
+
+    /** Preview controls: no separate scrollbar; grid scrolls in `.market-left` beside it */
+    .market-sidebar-toolbar {
+        @apply flex w-full shrink-0 flex-col lg:w-[300px] lg:max-w-[300px];
+    }
+
+    @media (min-width: 901px) {
+        .market-sidebar-toolbar {
+            align-self: stretch;
+            min-height: 0;
+            overflow-x: hidden;
+            overflow-y: visible;
+        }
+    }
+
+    .market-left.is-blurred {
+        filter: blur(5px);
+    }
+
+    /**
+     * Same shell as shadcn Card — pairs the resource grid box with the preview controls card.
+     */
+    .ct-ab-surface {
+        @apply rounded-2xl border border-border/80 bg-card text-card-foreground shadow-sm ring-1 ring-border/40;
+    }
+
+    .resource-grid,
+    [data-type="resource"] .structItemContainer {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        align-items: stretch;
+        gap: 12px 10px;
+        background: transparent;
+        padding: 20px 22px 24px;
+    }
+
+    .resource-card,
+    [data-type="resource"]
+        .structItemContainer
+        .structItem.structItem--resource {
+        margin: 0;
+        min-width: 0;
+        width: 100%;
+        overflow: hidden;
+        border-radius: 5px;
+        border: 1px solid #e5e9ec;
+        background: #fff;
+    }
+
+    /* Thumbnail area is always exactly 2:1 — box is sized by aspect-ratio; image fills via object-fit */
+    .thumb-wrap,
+    .structItem--resourceInner
+        .structItem-cell.structItem-cell--icon.structItem-iconContainer {
+        @apply relative w-full overflow-hidden;
+        aspect-ratio: 2 / 1;
+        background-color: hsl(var(--primary-faint) / 0.8);
+    }
+
+    .thumb-image,
+    .structItem-iconContainer img.resourceCoverImage {
+        @apply absolute inset-0 h-full w-full object-cover;
+    }
+
+    .carousel-arrow {
+        @apply absolute top-1/2 z-20 -translate-y-1/2 bg-white p-1.5 text-[#575f6d];
+        width: 35px;
+        border-radius: 0;
+        font-size: 30px;
+        line-height: 1;
+    }
+
+    .carousel-arrow.left {
+        @apply left-0;
+        border-radius: 0 10px 10px 0;
+    }
+
+    .carousel-arrow.right {
+        @apply right-0;
+        border-radius: 10px 0 0 10px;
+    }
+
+    .sale-badge {
+        @apply absolute left-[10px] top-[10px] rounded bg-white px-1.5 py-0.5 text-[10px] font-bold text-black;
+    }
+
+    .price-badge {
+        @apply absolute bottom-[10px] right-[10px] rounded bg-white px-1.5 py-0.5 text-[10px] font-bold text-[#575f6d];
+        border: 1px solid #d3d3d3;
+    }
+
+    .old-price {
+        @apply ml-1 text-[10px] font-semibold text-red-500 line-through;
+    }
+
+    .resource-body,
+    .structItem-cell.structItem-cell--main {
+        @apply px-[8px] py-[6px];
+    }
+
+    .resource-title,
+    .structItem--resourceInner .structItem-title {
+        @apply line-clamp-1 leading-tight;
+        font-size: 14px;
+        font-weight: 700;
+        color: hsl(var(--primary-strong));
+    }
+
+    .resource-subtitle,
+    .structItem-minor {
+        @apply mt-0.5 line-clamp-1 font-semibold leading-tight;
+        font-size: 12px;
+        color: hsl(var(--primary-strong));
+    }
+
+    .resource-desc,
+    .structItem-resourceTagLine {
+        @apply mt-[6px] line-clamp-2 text-[#575f6d];
+        font-size: 12px;
+    }
+
+    .resource-meta,
+    .structItem-cell.structItem-cell--resourceMeta {
+        @apply mt-[6px] flex items-center justify-between text-[#575f6d];
+        font-size: 12px;
+        padding: 5px 10px 10px;
+    }
+
+    .rating {
+        @apply inline-flex items-center gap-0.5;
+    }
+
+    .star {
+        @apply h-3 w-3;
+        fill: hsl(var(--primary));
+        color: hsl(var(--primary));
+    }
+
+    .star.off {
+        fill: hsl(var(--primary-faint));
+        color: hsl(var(--primary-faint));
+    }
+
+    /** Layout only — surface styling comes from shadcn Card + utility classes */
+    .market-sidebar {
+        @apply h-fit w-full shrink-0;
+    }
+
+    .dark .resource-card,
+    .dark
+        [data-type="resource"]
+        .structItemContainer
+        .structItem.structItem--resource {
+        background: #1e293b;
+        border-color: #334155;
+    }
+
+    .dark .thumb-wrap,
+    .dark
+        .structItem--resourceInner
+        .structItem-cell.structItem-cell--icon.structItem-iconContainer {
+        background: #0b1220;
+    }
+
+    .dark .resource-title,
+    .dark .structItem--resourceInner .structItem-title {
+        color: hsl(var(--primary-strong));
+    }
+
+    .dark .resource-subtitle,
+    .dark .structItem-minor {
+        color: hsl(var(--primary) / 0.92);
+    }
+
+    .dark .resource-desc,
+    .dark .structItem-resourceTagLine,
+    .dark .resource-meta,
+    .dark .structItem-cell.structItem-cell--resourceMeta {
+        color: #cbd5e1;
+    }
+
+    .dark .price-badge,
+    .dark .sale-badge,
+    .dark .carousel-arrow {
+        background: #0f172a;
+        color: #e2e8f0;
+        border-color: #334155;
+    }
+
+    @media (max-width: 900px) {
+        .market-content {
+            @apply flex-col;
+        }
+
+        .resource-grid,
+        [data-type="resource"] .structItemContainer {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+    @media (max-width: 650px) {
+        .resource-grid,
+        [data-type="resource"] .structItemContainer {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+}
+
+/*
+ * Minecraft-style pixel font (GUI editor tooltips) from macimas-fonts/macsMinecraft
+ * fonts/Main — Regular.ttf → minecraft-regular.ttf, Bold.ttf → minecraft-bold.ttf.
+ * Upstream ships only regular + bold TTFs; &o (italic) uses the browser’s oblique synthesis.
+ * License: public/fonts/OFL.txt (SIL Open Font License 1.1).
+ */
+@font-face {
+    font-family: "Minecraft";
+    src: url("/fonts/minecraft-regular.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: "Minecraft";
+    src: url("/fonts/minecraft-bold.ttf") format("truetype");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
