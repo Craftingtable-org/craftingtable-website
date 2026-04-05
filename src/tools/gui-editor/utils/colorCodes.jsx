@@ -1,4 +1,5 @@
 import React, { memo } from "react";
+import { toSmallCapsUnicode } from "@/tools/text-formatter/transforms";
 
 const legacyColors = {
   '0': '#000000', '1': '#0000AA', '2': '#00AA00', '3': '#00AAAA',
@@ -26,13 +27,15 @@ const COLOR_CODE_REGEX =
 
 /**
  * @param {string} text
- * @param {{ font?: 'default' | 'minecraft' }} [options]
+ * @param {{ font?: 'default' | 'minecraft', smallCaps?: boolean }} [options]
  *   `minecraft` — use /public/fonts/ @font-face (&l→bold, &o→italic; italic is synthesized).
+ *   `smallCaps` — Unicode small caps on visible text runs only (not on codes or tags).
  */
 export function parseColorCodes(text, options = {}) {
   if (!text) return null;
 
   const useMinecraft = options.font === "minecraft";
+  const smallCaps = options.smallCaps === true;
   const result = [];
   let currentColor = "#FFFFFF";
   let isBold = false;
@@ -74,7 +77,9 @@ export function parseColorCodes(text, options = {}) {
         isStrikethrough = false;
       }
     } else if (match[3] || match[4] || match[5]) {
-      const content = match[3] || match[4] || match[5];
+      const rawContent = match[3] || match[4] || match[5];
+      const content =
+        smallCaps && match[3] ? toSmallCapsUnicode(rawContent) : rawContent;
       const decoration =
         `${isUnderline ? "underline " : ""}${isStrikethrough ? "line-through" : ""}`.trim() ||
         "none";

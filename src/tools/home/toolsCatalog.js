@@ -1,4 +1,4 @@
-import { Box, FileText, ImageIcon, LayoutGrid } from "lucide-react";
+import { Box, CaseSensitive, FileText, ImageIcon, LayoutGrid } from "lucide-react";
 
 /**
  * Tools listed on the home hub. Keep in sync with `src/routes.jsx` and `src/layout/mainNav.jsx`.
@@ -38,6 +38,15 @@ export const TOOLS_CATALOG = [
       "Build listing readmes with placeholders, DeluxeMenus/LuckPerms-style guides, saved templates, and export to Markdown, TXT, or HTML.",
     icon: FileText,
     badge: "Docs",
+    cta: "Try it",
+  },
+  {
+    to: "/tools/text-formatter",
+    title: "Text formatter",
+    description:
+      "Format strings with legacy codes, hex and MiniMessage, gradients, and emoji — preview as chat, signs, books, lore, or item names.",
+    icon: CaseSensitive,
+    badge: "Minecraft",
     cta: "Try it",
   },
 ];

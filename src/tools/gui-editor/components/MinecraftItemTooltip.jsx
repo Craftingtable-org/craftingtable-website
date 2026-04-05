@@ -33,11 +33,10 @@ export const MinecraftItemTooltip = memo(function MinecraftItemTooltip({
     >
       {showName ? (
         <div
-          className="mb-1 whitespace-nowrap"
+          className="mb-1 whitespace-pre"
           style={{ textShadow: "1px 1px 0 #2a1a3a" }}
         >
-          {parseColorCodes(name.trim(), MINECRAFT_PARSE_OPTIONS) ??
-            name.trim()}
+          {parseColorCodes(name.trim(), MINECRAFT_PARSE_OPTIONS) ?? name.trim()}
         </div>
       ) : null}
       {showLore ? (
@@ -45,7 +44,7 @@ export const MinecraftItemTooltip = memo(function MinecraftItemTooltip({
           {loreLines.map((line, i) => (
             <div
               key={i}
-              className="whitespace-nowrap"
+              className="whitespace-pre"
               style={{ textShadow: "1px 1px 0 #1a1020" }}
             >
               {parseColorCodes(line, MINECRAFT_PARSE_OPTIONS) ?? line}

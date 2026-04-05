@@ -33,6 +33,12 @@ const ThreadPage = lazy(() =>
   })),
 );
 
+const TextFormatterPage = lazy(() =>
+  import("@/tools/text-formatter/TextFormatterPage").then((m) => ({
+    default: m.TextFormatterPage,
+  })),
+);
+
 function RouteFallback() {
   return (
     <div className="flex min-h-[40vh] items-center justify-center text-sm text-muted-foreground">
@@ -87,6 +93,14 @@ export function AppRoutes() {
           element={
             <Suspense fallback={<RouteFallback />}>
               <ReadmeBuilderPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/tools/text-formatter"
+          element={
+            <Suspense fallback={<RouteFallback />}>
+              <TextFormatterPage />
             </Suspense>
           }
         />

@@ -11,6 +11,7 @@ const ROUTE_DOCUMENT_TITLES = {
   "/tools/gui-editor": "Minecraft GUI editor",
   "/tools/schematic-to-bedrock": "Schematic → Bedrock",
   "/tools/readme-builder": "Resource README builder",
+  "/tools/text-formatter": "Text formatter",
 };
 
 /**

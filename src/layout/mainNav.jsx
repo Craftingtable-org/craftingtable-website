@@ -1,4 +1,4 @@
-import { Box, FileText, Home, ImageIcon, LayoutGrid } from "lucide-react";
+import { Box, CaseSensitive, FileText, Home, ImageIcon, LayoutGrid } from "lucide-react";
 
 /**
  * Single source of truth for the app sidebar. Every route that should appear in the nav
@@ -28,6 +28,12 @@ export const mainNavItems = [
     to: "/tools/readme-builder",
     label: "Resource README",
     icon: FileText,
+    end: false,
+  },
+  {
+    to: "/tools/text-formatter",
+    label: "Text formatter",
+    icon: CaseSensitive,
     end: false,
   },
 ];
