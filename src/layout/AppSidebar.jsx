@@ -3,8 +3,10 @@ import {
   MessageCircle,
   PanelLeftClose,
   PanelRightOpen,
+  BookOpen,
+  ArrowRight,
 } from "lucide-react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { useAppChrome } from "@/context/AppChromeContext";
 import { Button } from "@/components/ui/button";
 import { SponsoredSlot } from "@/components/SponsoredSlot";
@@ -131,6 +133,22 @@ export function AppSidebar() {
 
           <div className="shrink-0 space-y-4 border-t border-border/60 p-5">
             <SponsoredSlot toolbarColumn />
+            <div className="space-y-3 rounded-2xl bg-muted/40 p-4 ring-1 ring-border/50">
+              <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+                <BookOpen className="h-3 w-3" />
+                Latest from the Blog
+              </div>
+              <p className="text-[11px] leading-relaxed text-muted-foreground">
+                How to optimize your server configs and design better player experiences.
+              </p>
+              <Link
+                to="/blog"
+                className="flex items-center gap-1 text-[11px] font-semibold text-primary hover:underline"
+              >
+                View our blog <ArrowRight className="h-3 w-3" />
+              </Link>
+            </div>
+
             <Button
               variant="default"
               className="w-full gap-2 rounded-xl shadow-sm"

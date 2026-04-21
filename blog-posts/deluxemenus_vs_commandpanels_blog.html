@@ -1,0 +1,537 @@
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap');
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+.ct-wrap {
+  font-family: 'Geist', system-ui, sans-serif;
+  color: var(--color-text-primary);
+  max-width: 720px;
+  padding-bottom: 3rem;
+}
+
+.ct-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  padding: 1.25rem 0 1.5rem;
+  font-family: 'Geist Mono', monospace;
+}
+.ct-breadcrumb a { color: var(--color-text-secondary); text-decoration: none; }
+.ct-breadcrumb a:hover { color: var(--color-text-primary); }
+.ct-breadcrumb .sep { opacity: 0.4; }
+.ct-breadcrumb .current { color: var(--color-text-primary); }
+
+.ct-hero {
+  background: var(--color-background-secondary);
+  border: 0.5px solid var(--color-border-tertiary);
+  border-radius: var(--border-radius-lg);
+  padding: 2rem 2rem 1.75rem;
+  margin-bottom: 1.75rem;
+}
+
+.ct-tag-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 1rem;
+}
+
+.ct-tag {
+  display: inline-block;
+  font-family: 'Geist Mono', monospace;
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-weight: 500;
+}
+.ct-tag-blue { background: #E6F1FB; color: #0C447C; }
+.ct-tag-gray { background: var(--color-background-primary); border: 0.5px solid var(--color-border-secondary); color: var(--color-text-secondary); }
+
+.ct-hero h1 {
+  font-size: 26px;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--color-text-primary);
+  margin-bottom: 0.75rem;
+}
+
+.ct-hero-meta {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.ct-hero-meta .dot { width: 3px; height: 3px; border-radius: 50%; background: var(--color-border-secondary); display: inline-block; }
+
+.ct-intro {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--color-text-secondary);
+  margin-bottom: 1.75rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 0.5px solid var(--color-border-tertiary);
+}
+
+.ct-section-label {
+  font-family: 'Geist Mono', monospace;
+  font-size: 11px;
+  color: var(--color-text-secondary);
+  letter-spacing: 0.1em;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.ct-section-label::after {
+  content: '';
+  flex: 1;
+  height: 0.5px;
+  background: var(--color-border-tertiary);
+}
+
+.ct-h2 {
+  font-size: 19px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: 1rem;
+}
+
+.ct-plugin-card {
+  border: 0.5px solid var(--color-border-tertiary);
+  border-radius: var(--border-radius-lg);
+  overflow: hidden;
+  margin-bottom: 1.25rem;
+}
+
+.ct-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.9rem 1.1rem;
+  background: var(--color-background-secondary);
+  border-bottom: 0.5px solid var(--color-border-tertiary);
+}
+
+.ct-card-header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ct-plugin-icon {
+  width: 34px; height: 34px;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Geist Mono', monospace;
+  font-size: 13px;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+.icon-dm { background: #E6F1FB; color: #0C447C; border: 0.5px solid #B5D4F4; }
+.icon-cp { background: #EAF3DE; color: #27500A; border: 0.5px solid #C0DD97; }
+
+.ct-plugin-name {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--color-text-primary);
+}
+.ct-plugin-sub {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  font-family: 'Geist Mono', monospace;
+  margin-top: 1px;
+}
+
+.ct-pros-cons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.ct-col {
+  padding: 1rem 1.1rem;
+}
+.ct-col:first-child { border-right: 0.5px solid var(--color-border-tertiary); }
+
+.ct-col-label {
+  font-family: 'Geist Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  font-weight: 500;
+  margin-bottom: 0.65rem;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.ct-col-label.pro { color: #3B6D11; }
+.ct-col-label.con { color: #A32D2D; }
+
+.ct-dot {
+  width: 7px; height: 7px;
+  border-radius: 2px;
+  display: inline-block;
+  flex-shrink: 0;
+}
+.dot-g { background: #639922; }
+.dot-r { background: #E24B4A; }
+.dot-b { background: #378ADD; }
+
+.ct-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.ct-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--color-text-secondary);
+}
+.ct-list li .ct-dot { margin-top: 4px; }
+
+.ct-table-wrap {
+  border: 0.5px solid var(--color-border-tertiary);
+  border-radius: var(--border-radius-lg);
+  overflow: hidden;
+  margin-bottom: 1.75rem;
+}
+.ct-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+  table-layout: fixed;
+}
+.ct-table th {
+  background: var(--color-background-secondary);
+  padding: 9px 14px;
+  text-align: left;
+  font-weight: 500;
+  font-size: 12px;
+  font-family: 'Geist Mono', monospace;
+  color: var(--color-text-secondary);
+  border-bottom: 0.5px solid var(--color-border-tertiary);
+}
+.ct-table td {
+  padding: 9px 14px;
+  border-bottom: 0.5px solid var(--color-border-tertiary);
+  color: var(--color-text-secondary);
+  line-height: 1.4;
+}
+.ct-table tr:last-child td { border-bottom: none; }
+.ct-table tr:nth-child(even) td { background: var(--color-background-secondary); }
+.ct-table th:first-child, .ct-table td:first-child { width: 34%; }
+
+.ct-pill {
+  display: inline-block;
+  font-size: 11px;
+  font-family: 'Geist Mono', monospace;
+  padding: 2px 9px;
+  border-radius: 20px;
+}
+.pill-g { background: #EAF3DE; color: #3B6D11; }
+.pill-b { background: #E6F1FB; color: #0C447C; }
+.pill-a { background: #FAEEDA; color: #633806; }
+.pill-r { background: #FCEBEB; color: #791F1F; }
+
+.ct-verdict {
+  border: 0.5px solid var(--color-border-tertiary);
+  border-left: 3px solid #378ADD;
+  border-radius: 0 var(--border-radius-lg) var(--border-radius-lg) 0;
+  padding: 1.1rem 1.4rem;
+  margin-bottom: 1.75rem;
+  background: #E6F1FB;
+}
+.ct-verdict .vl {
+  font-family: 'Geist Mono', monospace;
+  font-size: 11px;
+  color: #185FA5;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.4rem;
+}
+.ct-verdict p {
+  font-size: 14px;
+  line-height: 1.65;
+  color: #0C447C;
+}
+.ct-verdict strong { font-weight: 500; color: #042C53; }
+
+.ct-rec {
+  background: #EAF3DE;
+  border: 0.5px solid #C0DD97;
+  border-left: 3px solid #639922;
+  border-radius: 0 var(--border-radius-lg) var(--border-radius-lg) 0;
+  padding: 1rem 1.25rem;
+  margin: 1.25rem 0;
+  font-size: 14px;
+  line-height: 1.65;
+  color: #3B6D11;
+}
+.ct-rec strong { font-weight: 500; color: #173404; }
+
+.ct-body {
+  font-size: 14.5px;
+  line-height: 1.75;
+  color: var(--color-text-secondary);
+  margin-bottom: 1.1rem;
+}
+
+.ct-cta {
+  background: var(--color-background-secondary);
+  border: 0.5px solid var(--color-border-tertiary);
+  border-radius: var(--border-radius-lg);
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+  margin-top: 1.75rem;
+}
+
+.ct-cta-icon {
+  width: 40px; height: 40px;
+  background: #E6F1FB;
+  border: 0.5px solid #B5D4F4;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.ct-cta-icon svg { width: 20px; height: 20px; stroke: #185FA5; fill: none; stroke-width: 1.5; }
+
+.ct-cta-body { flex: 1; }
+.ct-cta-body strong {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  margin-bottom: 3px;
+}
+.ct-cta-body p {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+}
+.ct-cta-body a { color: #185FA5; text-decoration: none; }
+
+.ct-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #3d82f7;
+  color: #fff;
+  font-size: 13.5px;
+  font-weight: 500;
+  padding: 8px 18px;
+  border-radius: 8px;
+  text-decoration: none;
+  flex-shrink: 0;
+  font-family: 'Geist', sans-serif;
+  cursor: pointer;
+  border: none;
+  transition: background 0.15s;
+}
+.ct-cta-btn:hover { background: #2563d4; }
+.ct-cta-btn svg { width: 14px; height: 14px; stroke: #fff; fill: none; stroke-width: 2; }
+</style>
+
+<div class="ct-wrap">
+  <h2 class="sr-only" style="position:absolute;left:-9999px">DeluxeMenus vs CommandPanels — blog post on Craftingtable</h2>
+
+  <div class="ct-breadcrumb">
+    <a href="#">Home</a>
+    <span class="sep">/</span>
+    <a href="#">Blog</a>
+    <span class="sep">/</span>
+    <span class="current">DeluxeMenus vs CommandPanels</span>
+  </div>
+
+  <div class="ct-hero">
+    <div class="ct-tag-row">
+      <span class="ct-tag ct-tag-blue">Server admin guide</span>
+      <span class="ct-tag ct-tag-gray">8 min read</span>
+    </div>
+    <h1>DeluxeMenus vs CommandPanels: which plugin should you use?</h1>
+    <div class="ct-hero-meta" style="margin-top:0.75rem;">
+      <span>By Craftingtable Staff</span>
+      <span class="dot"></span>
+      <span>Plugin deep-dive</span>
+      <span class="dot"></span>
+      <span>April 2026</span>
+    </div>
+  </div>
+
+  <p class="ct-intro">
+    If you've spent any time running a Minecraft server, you've probably come across the need for a custom GUI menu — whether it's a player hub, a shop, a kit selector, or a warp panel. Two plugins dominate this space: <strong style="color:var(--color-text-primary);font-weight:500;">DeluxeMenus</strong> and <strong style="color:var(--color-text-primary);font-weight:500;">CommandPanels</strong>. Both are powerful, both are popular — but they serve slightly different philosophies. Let's break them down.
+  </p>
+
+  <div class="ct-section-label">THE PLUGINS</div>
+  <div class="ct-h2">What are they?</div>
+
+  <p class="ct-body">At their core, both plugins let you build interactive inventory GUIs using configuration files. Players click on items in a chest-style menu and actions happen — commands run, messages send, menus open. But the way each plugin approaches that task is where things diverge.</p>
+
+  <div class="ct-plugin-card">
+    <div class="ct-card-header">
+      <div class="ct-card-header-left">
+        <div class="ct-plugin-icon icon-dm">DM</div>
+        <div>
+          <div class="ct-plugin-name">DeluxeMenus</div>
+          <div class="ct-plugin-sub">by clip — deep PlaceholderAPI integration</div>
+        </div>
+      </div>
+      <span class="ct-tag ct-tag-gray">Minecraft</span>
+    </div>
+    <div class="ct-pros-cons">
+      <div class="ct-col">
+        <div class="ct-col-label pro"><span class="ct-dot dot-g"></span> Pros</div>
+        <ul class="ct-list">
+          <li><span class="ct-dot dot-g"></span>Deep PlaceholderAPI integration — menus display live server stats and player data</li>
+          <li><span class="ct-dot dot-g"></span>Extremely mature and battle-tested with a huge community and pre-built templates</li>
+          <li><span class="ct-dot dot-g"></span>Granular control over every slot, item meta, action, and condition</li>
+          <li><span class="ct-dot dot-g"></span>Complex conditional logic per item — requirements, deny/allow actions</li>
+          <li><span class="ct-dot dot-g"></span>Free to use with no premium paywall for the core plugin</li>
+        </ul>
+      </div>
+      <div class="ct-col">
+        <div class="ct-col-label con"><span class="ct-dot dot-r"></span> Cons</div>
+        <ul class="ct-list">
+          <li><span class="ct-dot dot-r"></span>Config syntax is verbose and intimidating for newcomers</li>
+          <li><span class="ct-dot dot-r"></span>Requires PlaceholderAPI and often additional expansion packs</li>
+          <li><span class="ct-dot dot-r"></span>Error messages can be cryptic — debugging YAML issues is painful</li>
+          <li><span class="ct-dot dot-r"></span>No built-in GUI editor — everything is hand-written config</li>
+          <li><span class="ct-dot dot-r"></span>Development has historically been slow; updates can lag behind server versions</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="ct-plugin-card">
+    <div class="ct-card-header">
+      <div class="ct-card-header-left">
+        <div class="ct-plugin-icon icon-cp">CP</div>
+        <div>
+          <div class="ct-plugin-name">CommandPanels</div>
+          <div class="ct-plugin-sub">by rockyhawk64 — clean syntax, actively maintained</div>
+        </div>
+      </div>
+      <span class="ct-tag ct-tag-gray">Server</span>
+    </div>
+    <div class="ct-pros-cons">
+      <div class="ct-col">
+        <div class="ct-col-label pro"><span class="ct-dot dot-g"></span> Pros</div>
+        <ul class="ct-list">
+          <li><span class="ct-dot dot-g"></span>Much cleaner, more readable YAML — significantly lower barrier to entry</li>
+          <li><span class="ct-dot dot-g"></span>Actively and consistently maintained with regular updates</li>
+          <li><span class="ct-dot dot-g"></span>Supports PlaceholderAPI but doesn't require it to get started</li>
+          <li><span class="ct-dot dot-g"></span>Built-in cooldowns, sounds, and open-on-join out of the box</li>
+          <li><span class="ct-dot dot-g"></span>Panel inheritance and templates make managing multiple menus efficient</li>
+        </ul>
+      </div>
+      <div class="ct-col">
+        <div class="ct-col-label con"><span class="ct-dot dot-r"></span> Cons</div>
+        <ul class="ct-list">
+          <li><span class="ct-dot dot-r"></span>Smaller community compared to DeluxeMenus — fewer pre-made templates</li>
+          <li><span class="ct-dot dot-r"></span>Some advanced conditional logic requires the paid premium version</li>
+          <li><span class="ct-dot dot-r"></span>Less flexible than DM for very complex, multi-layered conditional menus</li>
+          <li><span class="ct-dot dot-r"></span>Documentation doesn't cover every edge case</li>
+          <li><span class="ct-dot dot-r"></span>Fewer forum posts for obscure problems</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="ct-section-label" style="margin-top:1.75rem;">Side-by-side comparison</div>
+
+  <div class="ct-table-wrap">
+    <table class="ct-table">
+      <thead>
+        <tr>
+          <th>Category</th>
+          <th>DeluxeMenus</th>
+          <th>CommandPanels</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Ease of setup</td>
+          <td><span class="ct-pill pill-a">Moderate–Hard</span></td>
+          <td><span class="ct-pill pill-g">Easy</span></td>
+        </tr>
+        <tr>
+          <td>PlaceholderAPI</td>
+          <td><span class="ct-pill pill-g">Deep (required)</span></td>
+          <td><span class="ct-pill pill-g">Optional</span></td>
+        </tr>
+        <tr>
+          <td>Config readability</td>
+          <td><span class="ct-pill pill-a">Verbose</span></td>
+          <td><span class="ct-pill pill-g">Clean & concise</span></td>
+        </tr>
+        <tr>
+          <td>Conditional logic</td>
+          <td><span class="ct-pill pill-g">Very advanced</span></td>
+          <td><span class="ct-pill pill-b">Good (premium for more)</span></td>
+        </tr>
+        <tr>
+          <td>Community & templates</td>
+          <td><span class="ct-pill pill-g">Large</span></td>
+          <td><span class="ct-pill pill-a">Growing</span></td>
+        </tr>
+        <tr>
+          <td>Active maintenance</td>
+          <td><span class="ct-pill pill-a">Slower pace</span></td>
+          <td><span class="ct-pill pill-g">Actively updated</span></td>
+        </tr>
+        <tr>
+          <td>Cost</td>
+          <td><span class="ct-pill pill-g">Free</span></td>
+          <td><span class="ct-pill pill-b">Free + paid tier</span></td>
+        </tr>
+        <tr>
+          <td>Best for</td>
+          <td style="color:var(--color-text-secondary)">Power users, complex logic</td>
+          <td style="color:var(--color-text-secondary)">New admins, clean configs</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="ct-section-label">Our recommendation</div>
+  <div class="ct-h2">Which should you choose?</div>
+
+  <p class="ct-body">If you're an experienced server admin who needs maximum flexibility — deeply nested conditions, heavy PlaceholderAPI logic, and you're comfortable spending hours in a YAML file — <strong style="color:var(--color-text-primary);font-weight:500;">DeluxeMenus</strong> remains a rock-solid choice. It's powerful, has a massive library of community-made configs, and costs nothing.</p>
+
+  <div class="ct-rec">
+    <strong>New to server administration? Start with CommandPanels.</strong> Its config syntax is friendlier, it's actively maintained, and you'll spend far less time fighting cryptic YAML errors. Getting your first working menu up in minutes is a great confidence boost — and CommandPanels makes that happen.
+  </div>
+
+  <div class="ct-verdict">
+    <div class="vl">Verdict</div>
+    <p>CommandPanels wins on <strong>developer experience</strong>. It lowers the barrier to entry, lets you move fast, and has enough power for 90% of what most servers actually need. Reserve DeluxeMenus for situations where you truly need its extra depth — and only after you're comfortable with how these plugins work.</p>
+  </div>
+
+  <div class="ct-section-label">Tools</div>
+  <div class="ct-h2">Speed up your workflow</div>
+
+  <p class="ct-body">Whether you're writing menus in DeluxeMenus or CommandPanels, the real time sink is often the surrounding admin work. The right tools make a big difference.</p>
+
+  <div class="ct-cta">
+    <div class="ct-cta-icon">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+    </div>
+    <div class="ct-cta-body">
+      <strong>Check out our tools — craftingtable.org</strong>
+      <p>A collection of tools built to speed up your Minecraft server development and administration workflows. Less config grinding, more playing. <a href="https://craftingtable.org">Visit craftingtable.org →</a></p>
+    </div>
+    <a href="https://craftingtable.org" class="ct-cta-btn">
+      Try it
+      <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+
+</div>

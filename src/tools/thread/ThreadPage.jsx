@@ -1,5 +1,6 @@
 import {
   ArrowRight,
+  BookOpen,
   Box,
   CheckCircle2,
   Compass,
@@ -43,8 +44,7 @@ const FAQ_ITEMS = [
     a: "No. Tools run in your browser. Build previews, export YAML or README files, and download assets without installing desktop software.",
   },
   {
-    q: "Who is this for?",
-    a: "Minecraft UGC creators: plugin and resource sellers, server owners who publish menus and docs, and anyone who wants faster iteration on listings and server-facing content.",
+    a: "Minecraft server owners and admins who want to streamline their configuration, documentation, and GUI design workflows.",
   },
   {
     q: "Are these tools free?",
@@ -54,7 +54,7 @@ const FAQ_ITEMS = [
 
 export function ThreadPage() {
   useEffect(() => {
-    document.title = "Craftingtable — Tools for Minecraft creators";
+    document.title = "Craftingtable — Tools for Minecraft server admins";
   }, []);
 
   return (
@@ -112,22 +112,21 @@ export function ThreadPage() {
           <div className="pointer-events-none absolute left-1/2 top-0 h-[min(60vw,28rem)] w-[min(120vw,56rem)] -translate-x-1/2 rounded-full bg-primary/20 blur-3xl dark:bg-primary/15" />
           <div className="relative mx-auto max-w-4xl text-center">
             <p className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/25 bg-primary/5 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-primary">
-              <Wrench className="h-3.5 w-3.5" aria-hidden />
-              In-browser tools for creators
+              In-browser tools for server admins
             </p>
             <h1
               id="landing-hero-title"
               className="text-balance text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl lg:leading-[1.08]"
             >
-              Ship Minecraft listings &amp; server content{" "}
+              Manage your Minecraft server{" "}
               <span className="bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent dark:from-primary dark:to-primary/80">
                 without the busywork
               </span>
             </h1>
             <p className="mx-auto mt-6 max-w-2xl text-pretty text-lg leading-relaxed text-muted-foreground sm:text-xl">
-              Compare thumbnails like a real marketplace grid, lay out server
-              GUIs with drag-and-drop, write resource READMEs with placeholders
-              and exports — all in one place, tuned for how UGC creators
+              Lay out server
+              GUIs with drag-and-drop, generate menu YAMLs, and write guides
+              with placeholders — all in one place, tuned for how server admins
               actually work.
             </p>
             <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
@@ -168,15 +167,15 @@ export function ThreadPage() {
             <ul className="flex flex-wrap items-center justify-center gap-x-10 gap-y-4 text-center text-sm font-medium text-muted-foreground sm:text-base">
               <li className="flex items-center gap-2">
                 <Users className="h-5 w-5 shrink-0 text-primary" aria-hidden />
-                Marketplace sellers
+                Server Owners
               </li>
               <li className="flex items-center gap-2">
                 <LayoutGrid className="h-5 w-5 shrink-0 text-primary" />
-                Server owners &amp; admins
+                Network Admins
               </li>
               <li className="flex items-center gap-2">
                 <FileText className="h-5 w-5 shrink-0 text-primary" />
-                Docs &amp; listing writers
+                Configuration Specialists
               </li>
             </ul>
           </div>
@@ -190,12 +189,12 @@ export function ThreadPage() {
                 Why we exist
               </p>
               <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-                Creators lose time context-switching between editors, listing
+                Admins lose time context-switching between editors, wiki
                 UIs, and server configs.
               </h2>
               <p className="text-lg leading-relaxed text-muted-foreground">
                 You shouldn’t need five tabs and a spreadsheet to pick a
-                thumbnail, draft a README, and align a menu YAML with what
+                color code, draft a guide, and align a menu YAML with what
                 players actually see. We build small, sharp tools that match
                 real workflows — not generic “AI writer” boxes.
               </p>
@@ -207,7 +206,6 @@ export function ThreadPage() {
               <ul className="mt-6 space-y-4">
                 {[
                   "Live text formatting with legacy codes, MiniMessage tags, small caps, and emoji.",
-                  "Previews that look like real resource grids, not toy layouts.",
                   "Exports you can paste into CommandPanels, DeluxeMenus, or your host.",
                   "README flows with BBCode/Markdown, placeholders, and one-click downloads.",
                 ].map((line) => (
@@ -237,7 +235,7 @@ export function ThreadPage() {
           </h2>
           <div className="mx-auto grid max-w-6xl grid-cols-2 gap-8 px-4 sm:grid-cols-4 sm:px-6">
             {[
-              { n: "4+", label: "Focused tools" },
+              { n: "3", label: "Focused tools" },
               { n: "0", label: "Installs required" },
               { n: "100%", label: "In your browser" },
               { n: "∞", label: "Iterations" },
@@ -273,7 +271,7 @@ export function ThreadPage() {
               {
                 step: "01",
                 title: "Choose a workflow",
-                body: "Thumbnail comparison, GUI layout, README drafting, or schematic conversion — each tool is scoped to one job.",
+                body: "GUI layout or README drafting — each tool is scoped to one job.",
                 icon: Compass,
               },
               {
@@ -331,7 +329,7 @@ export function ThreadPage() {
                   Everything live today
                 </h2>
                 <p className="mt-3 max-w-xl text-lg text-muted-foreground">
-                  Same tools as the hub — optimized for shipping, not demos.
+                  Same tools as the hub — optimized for server management, not demos.
                 </p>
               </div>
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -432,7 +430,7 @@ export function ThreadPage() {
               },
               {
                 title: "Creator-native output",
-                body: "YAML, Markdown, HTML, and assets formatted for the tools servers and shops already use.",
+                body: "YAML, Markdown, HTML, and assets formatted for the plugins servers already use.",
                 icon: Box,
               },
             ].map((p) => (
@@ -476,6 +474,76 @@ export function ThreadPage() {
                 </AccordionItem>
               ))}
             </Accordion>
+          </div>
+        </section>
+
+        {/* Blog section */}
+        <section className="mx-auto max-w-6xl px-4 py-20 sm:px-6 lg:py-24" aria-labelledby="blog-heading">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-widest text-primary">
+                Insights
+              </p>
+              <h2 id="blog-heading" className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
+                View our blog
+              </h2>
+              <p className="mt-3 max-w-xl text-lg text-muted-foreground">
+                Strategies and guides to help you scale your Minecraft resource business.
+              </p>
+            </div>
+            <Button variant="ghost" className="hidden sm:flex gap-2 text-primary" asChild>
+              <Link to="/blog">
+                Explore all articles <ArrowRight className="h-4 w-4" />
+              </Link>
+            </Button>
+          </div>
+
+          <div className="mt-12 grid gap-6 sm:grid-cols-3">
+            {[
+              {
+                id: "optimize-server-performance",
+                title: "Optimize server performance",
+                desc: "Learn how to tune your paper.yml and spigot.yml to handle more players without lag.",
+                cat: "Performance",
+              },
+              {
+                id: "design-engaging-menus",
+                title: "Engaging GUI design",
+                desc: "The science of designing server menus that are intuitive and conversion-friendly.",
+                cat: "Design",
+              },
+              {
+                id: "automating-admin-tasks",
+                title: "Automate admin tasks",
+                desc: "Why manual config updates are a waste of time and how to use templates to stay organized.",
+                cat: "Automation",
+              },
+            ].map((post) => (
+              <Card key={post.title} className="group overflow-hidden rounded-2xl border-border/60 bg-card shadow-sm ring-1 ring-border/40 transition-all hover:shadow-md hover:ring-primary/20">
+                <CardHeader className="space-y-3">
+                  <div className="text-[10px] font-bold uppercase tracking-widest text-primary/80">
+                    {post.cat}
+                  </div>
+                  <CardTitle className="text-xl leading-tight group-hover:text-primary transition-colors">
+                    <Link to={`/blog/${post.id}`}>{post.title}</Link>
+                  </CardTitle>
+                  <CardDescription className="line-clamp-2">
+                    {post.desc}
+                  </CardDescription>
+                </CardHeader>
+                <CardFooter>
+                  <Link to={`/blog/${post.id}`} className="flex items-center gap-1 text-xs font-bold text-primary group-hover:underline">
+                    Read article <ArrowRight className="h-3.5 w-3.5" />
+                  </Link>
+                </CardFooter>
+              </Card>
+            ))}
+          </div>
+
+          <div className="mt-10 text-center sm:hidden">
+            <Button variant="outline" className="w-full rounded-xl" asChild>
+              <Link to="/blog">Explore all articles</Link>
+            </Button>
           </div>
         </section>
 

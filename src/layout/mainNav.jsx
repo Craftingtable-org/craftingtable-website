@@ -1,32 +1,25 @@
-import { Box, CaseSensitive, FileText, Home, ImageIcon, LayoutGrid } from "lucide-react";
+import {
+  CaseSensitive,
+  FileText,
+  Home,
+  LayoutGrid,
+} from "lucide-react";
 
 /**
  * Single source of truth for the app sidebar. Every route that should appear in the nav
  * must be listed here so the bar stays identical on all pages (same order, labels, icons).
  */
 export const mainNavItems = [
-  { to: "/", label: "Home", icon: Home, end: true },
-  {
-    to: "/tools/thumbnail-tester",
-    label: "A/B thumbnail tester",
-    icon: ImageIcon,
-    end: false,
-  },
+  { to: "/", label: "Overview", icon: Home, end: true },
   {
     to: "/tools/gui-editor",
-    label: "Minecraft GUI editor",
+    label: "GUI editor",
     icon: LayoutGrid,
     end: false,
   },
   {
-    to: "/tools/schematic-to-bedrock",
-    label: "Schematic → Bedrock",
-    icon: Box,
-    end: false,
-  },
-  {
     to: "/tools/readme-builder",
-    label: "Resource README",
+    label: "README builder",
     icon: FileText,
     end: false,
   },

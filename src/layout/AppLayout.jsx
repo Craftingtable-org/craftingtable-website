@@ -7,9 +7,7 @@ import { SiteFooter } from "@/components/SiteFooter";
 /** Keep in sync with `ToolPageHeader` titles and `mainNav.jsx` labels. */
 const ROUTE_DOCUMENT_TITLES = {
   "/": "Home",
-  "/tools/thumbnail-tester": "A/B thumbnail tester",
   "/tools/gui-editor": "Minecraft GUI editor",
-  "/tools/schematic-to-bedrock": "Schematic → Bedrock",
   "/tools/readme-builder": "Resource README builder",
   "/tools/text-formatter": "Text formatter",
 };

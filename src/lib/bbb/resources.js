@@ -50,7 +50,7 @@ export function formatBbbPrice(price, currency) {
 
 /**
  * Load public marketplace resources and resolve author usernames.
- * @param {{ limit?: number, page?: number, token?: string | null }} [opts] `token` is sent as `x-bbb-token` (same as pasted key in the thumbnail tester).
+ * @param {{ limit?: number, page?: number, token?: string | null }} [opts] `token` is sent as `x-bbb-token`.
  * @returns {Promise<BbbGridCard[]>}
  */
 export async function loadMarketplaceCompetitors(opts = {}) {

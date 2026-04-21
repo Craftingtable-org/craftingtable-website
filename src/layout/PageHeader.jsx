@@ -6,8 +6,8 @@ import { PageSubtitle, PageTitle } from "@/components/layout/PageHeading";
 /**
  * Shared page header: breadcrumbs + title row + sponsored slot.
  *
- * Uses the same width and right column as the thumbnail tester (`.market-content`
- * max 1480px, `.market-sidebar-toolbar` 300px) so the sponsor aligns with the tool
+ * Uses the same width and right column as marketplace-aligned tools
+ * (max 1480px, sidebar 300px) so the sponsor aligns with the tool
  * bar on every route.
  */
 export function ToolPageHeader({

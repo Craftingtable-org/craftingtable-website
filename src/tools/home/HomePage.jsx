@@ -18,8 +18,8 @@ export function HomePage() {
       header={
         <ToolPageHeader
           crumbs={[{ label: "Home" }]}
-          title="Simple tools for Minecraft creators and sellers"
-          description="We try to help Minecraft UGC Creators speed up their workflows."
+          title="Simple tools for Minecraft server admins"
+          description="We help Minecraft server owners and admins speed up their management workflows."
           icon={<Sparkles className="h-6 w-6" aria-hidden />}
         />
       }

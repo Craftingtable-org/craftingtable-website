@@ -3,11 +3,6 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import { AppLayout } from "@/layout/AppLayout";
 import { HomePage } from "@/tools/home";
 
-const ThumbnailTesterPage = lazy(() =>
-  import("@/tools/thumbnail-tester/ThumbnailTesterPage").then((m) => ({
-    default: m.ThumbnailTesterPage,
-  })),
-);
 
 const GuiEditorPage = lazy(() =>
   import("@/tools/gui-editor/GuiEditorPage").then((m) => ({
@@ -15,11 +10,6 @@ const GuiEditorPage = lazy(() =>
   })),
 );
 
-const SchematicToBedrockPage = lazy(() =>
-  import("@/tools/schematic-to-bedrock/SchematicToBedrockPage").then((m) => ({
-    default: m.SchematicToBedrockPage,
-  })),
-);
 
 const ReadmeBuilderPage = lazy(() =>
   import("@/tools/readme-builder/ReadmeBuilderPage").then((m) => ({
@@ -38,6 +28,10 @@ const TextFormatterPage = lazy(() =>
     default: m.TextFormatterPage,
   })),
 );
+
+const BlogPage = lazy(() => import("@/tools/blog/BlogPage"));
+
+const BlogPostPage = lazy(() => import("@/tools/blog/BlogPostPage"));
 
 function RouteFallback() {
   return (
@@ -65,26 +59,10 @@ export function AppRoutes() {
       <Route element={<AppLayout />}>
         <Route path="/" element={<HomePage />} />
         <Route
-          path="/tools/thumbnail-tester"
-          element={
-            <Suspense fallback={<RouteFallback />}>
-              <ThumbnailTesterPage />
-            </Suspense>
-          }
-        />
-        <Route
           path="/tools/gui-editor"
           element={
             <Suspense fallback={<RouteFallback />}>
               <GuiEditorPage />
-            </Suspense>
-          }
-        />
-        <Route
-          path="/tools/schematic-to-bedrock"
-          element={
-            <Suspense fallback={<RouteFallback />}>
-              <SchematicToBedrockPage />
             </Suspense>
           }
         />
@@ -101,6 +79,22 @@ export function AppRoutes() {
           element={
             <Suspense fallback={<RouteFallback />}>
               <TextFormatterPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/blog"
+          element={
+            <Suspense fallback={<RouteFallback />}>
+              <BlogPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/blog/:postId"
+          element={
+            <Suspense fallback={<RouteFallback />}>
+              <BlogPostPage />
             </Suspense>
           }
         />

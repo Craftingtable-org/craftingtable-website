@@ -22,7 +22,7 @@ function formatBbbApiError(json, httpStatus) {
       : null;
 
   if (code === "HeaderMissingError") {
-    return "No BuiltByBit API token was sent. Add BBB_API_TOKEN to your project .env (then restart the dev server) or paste your token in the thumbnail tester sidebar.";
+    return "No BuiltByBit API token was sent. Add BBB_API_TOKEN to your project .env (then restart the dev server).";
   }
   if (code === "HeaderMalformedError") {
     return "BuiltByBit rejected the Authorization header. Paste the token exactly as shown on BuiltByBit (including the Private or Shared prefix).";
@@ -38,7 +38,7 @@ function formatBbbApiError(json, httpStatus) {
   }
 
   if (httpStatus === 401 || httpStatus === 403) {
-    return "BuiltByBit API access denied (HTTP " + httpStatus + "). Use a valid Ultimate API key from your BuiltByBit account, or set BBB_API_TOKEN in .env / paste the key in the thumbnail tester.";
+    return "BuiltByBit API access denied (HTTP " + httpStatus + "). Use a valid Ultimate API key from your BuiltByBit account, or set BBB_API_TOKEN in .env.";
   }
 
   if (typeof code === "string" && code) return code;

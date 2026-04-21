@@ -20,15 +20,6 @@ export const TOOLS_CATALOG = [
     cta: "Try it",
   },
   {
-    to: "/tools/thumbnail-tester",
-    title: "A/B thumbnail tester",
-    description:
-      "Upload two thumbnails, adjust your title and price, and compare them side by side in a realistic resource grid.",
-    icon: ImageIcon,
-    badge: "Listing",
-    cta: "Try it",
-  },
-  {
     to: "/tools/gui-editor",
     title: "Minecraft GUI editor",
     description:
@@ -38,19 +29,10 @@ export const TOOLS_CATALOG = [
     cta: "Try it",
   },
   {
-    to: "/tools/schematic-to-bedrock",
-    title: "Schematic → Bedrock",
-    description:
-      "Convert Java .schem/.schematic files into a downloadable Bedrock .mcworld using a void template.",
-    icon: Box,
-    badge: "Under construction",
-    cta: "View",
-  },
-  {
     to: "/tools/readme-builder",
     title: "Resource README builder",
     description:
-      "Build listing readmes with placeholders, DeluxeMenus/LuckPerms-style guides, saved templates, and export to Markdown, TXT, or HTML.",
+      "Build server documentation and setup guides with placeholders, DeluxeMenus/LuckPerms-style snippets, saved templates, and export to Markdown or HTML.",
     icon: FileText,
     badge: "Docs",
     cta: "Try it",
