@@ -3,6 +3,7 @@ import react from "@vitejs/plugin-react";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { normalizeBbbAuthorizationValue } from "./src/lib/bbb/authorization.js";
+import { handleStatsApi } from "./server/statsApi.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -13,7 +14,21 @@ export default defineConfig(({ mode }) => {
   const apiTarget = `http://127.0.0.1:${apiPort}`;
 
   return {
-    plugins: [react()],
+    plugins: [
+      react(),
+      {
+        name: "stats-api-dev",
+        configureServer(server) {
+          server.middlewares.use((req, res, next) => {
+            if (req.url === "/api/stats") {
+              handleStatsApi(req, res);
+            } else {
+              next();
+            }
+          });
+        },
+      },
+    ],
     build: {
       rollupOptions: {
         output: {
