@@ -26,6 +26,29 @@ function AppLayoutInner() {
     document.title = page ? `${page} · Craftingtable` : "Craftingtable";
   }, [pathname]);
 
+  useEffect(() => {
+    const handleGlobalClick = (e) => {
+      const a = e.target.closest("a");
+      if (!a) return;
+
+      const href = a.getAttribute("href");
+      if (!href) return;
+
+      // Track conversion from blog to tools
+      if (pathname.startsWith("/blog") && href.startsWith("/tools/")) {
+        import("@/lib/analytics").then(({ trackEvent }) => {
+          trackEvent("tool_click", {
+            source_path: pathname,
+            tool_path: href,
+          });
+        });
+      }
+    };
+
+    document.addEventListener("click", handleGlobalClick);
+    return () => document.removeEventListener("click", handleGlobalClick);
+  }, [pathname]);
+
   return (
     <div className="ct-app relative flex min-h-screen w-full flex-col bg-muted/30 md:flex-row">
       <AppSidebar />

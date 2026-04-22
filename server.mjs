@@ -10,6 +10,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { normalizeBbbAuthorizationValue } from "./src/lib/bbb/authorization.js";
+import { handleStatsApi } from "./server/statsApi.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DIST = path.join(__dirname, "dist");
@@ -70,6 +71,10 @@ function sendFile(res, filePath) {
 const server = http.createServer(async (req, res) => {
   const host = req.headers.host || "localhost";
   const url = new URL(req.url || "/", `http://${host}`);
+
+  if (url.pathname === "/api/stats") {
+    return handleStatsApi(req, res);
+  }
 
   if (url.pathname.startsWith("/api/bbb")) {
     const auth = authorizationHeader(req);

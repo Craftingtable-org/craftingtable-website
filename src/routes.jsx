@@ -33,6 +33,8 @@ const BlogPage = lazy(() => import("@/tools/blog/BlogPage"));
 
 const BlogPostPage = lazy(() => import("@/tools/blog/BlogPostPage"));
 
+const StatsPage = lazy(() => import("@/tools/stats/StatsPage"));
+
 function RouteFallback() {
   return (
     <div className="flex min-h-[40vh] items-center justify-center text-sm text-muted-foreground">
@@ -95,6 +97,14 @@ export function AppRoutes() {
           element={
             <Suspense fallback={<RouteFallback />}>
               <BlogPostPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/stats"
+          element={
+            <Suspense fallback={<RouteFallback />}>
+              <StatsPage />
             </Suspense>
           }
         />
